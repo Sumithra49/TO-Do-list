@@ -12,7 +12,7 @@ function TodoApp() {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const res = await fetch('http://localhost:3000/tasks');
+        const res = await fetch('https://to-do-list-rxrh.onrender.com/tasks');
         const data = await res.json();
         setTasks(data);
         localStorage.setItem('tasks', JSON.stringify(data)); // optional
@@ -46,7 +46,7 @@ function TodoApp() {
     };
 
     try {
-      const res = await fetch('http://localhost:3000/tasks', {
+      const res = await fetch('https://to-do-list-rxrh.onrender.com/tasks', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newTask)
