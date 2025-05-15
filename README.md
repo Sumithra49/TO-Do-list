@@ -1,6 +1,11 @@
 # Todo Application
 
 A full-stack Todo application built with React and Node.js. The application features a modern, responsive UI for managing tasks with a RESTful backend API for data persistence.
+# Folder structure
+![image](https://github.com/user-attachments/assets/8adcd3c5-72b6-47ae-a7b5-ce820c05a076)
+![image](https://github.com/user-attachments/assets/7bdd1dd7-44e8-438e-9e51-d30e2412e0fb)
+
+
 
 ## Features
 
@@ -65,30 +70,10 @@ The frontend will be available at the URL shown in your terminal
 - `PUT /tasks/:id` - Update a task
 - `DELETE /tasks/:id` - Delete a task
 
-## Project Structure
+- # UI
+- ![image](https://github.com/user-attachments/assets/31f54d95-23f7-4d8c-9138-a33ce1e12f05)
+- ![image](https://github.com/user-attachments/assets/6ca217a6-abfb-4d7b-8aa0-742786872195)
 
-```
-├── data/
-│   └── tasks.json         # Task storage
-├── routes/
-│   └── tasks.js          # API route handlers
-├── src/
-│   ├── components/       # React components
-│   ├── styles/          # CSS styles
-│   └── App.jsx          # Root component
-├── utils/
-│   └── fileHandler.js    # File operations
-└── server.js            # Backend entry point
-```
 
-## Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License.
+.
