@@ -1,6 +1,9 @@
 # Todo Application
 
 A full-stack Todo application built with React and Node.js. The application features a modern, responsive UI for managing tasks with a RESTful backend API for data persistence.
+# Deploy link
+- frontend:https://to-do-list-theta-amber.vercel.app/
+- backend:https://to-do-list-rxrh.onrender.com
 # Folder structure
 ![image](https://github.com/user-attachments/assets/8adcd3c5-72b6-47ae-a7b5-ce820c05a076)
 ![image](https://github.com/user-attachments/assets/7bdd1dd7-44e8-438e-9e51-d30e2412e0fb)
