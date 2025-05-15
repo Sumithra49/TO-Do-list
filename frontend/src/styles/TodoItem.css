@@ -1,0 +1,67 @@
+/* TodoItem.css */
+.todo-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border-bottom: 1px solid #E5E7EB;
+  transition: background-color 0.15s ease-in-out;
+}
+
+.todo-item:hover {
+  background-color: #F9FAFB;
+}
+
+.todo-content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.todo-item input[type="checkbox"] {
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 4px;
+  border: 1px solid #D1D5DB;
+  cursor: pointer;
+}
+
+.task-title {
+  font-size: 1rem;
+  color: #374151;
+  transition: color 0.15s ease-in-out, text-decoration 0.15s ease-in-out;
+}
+
+.todo-item.completed .task-title {
+  color: #9CA3AF;
+  text-decoration: line-through;
+}
+
+.delete-btn {
+  background-color: #EF4444;
+  color: white;
+  border: none;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  opacity: 0.9;
+  transition: opacity 0.15s ease-in-out;
+}
+
+.delete-btn:hover {
+  opacity: 1;
+}
+
+/* Media queries for responsive design */
+@media (max-width: 640px) {
+  .todo-item {
+    padding: 0.75rem;
+  }
+  
+  .delete-btn {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.75rem;
+  }
+}

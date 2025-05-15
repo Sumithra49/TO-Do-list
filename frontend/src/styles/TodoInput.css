@@ -1,0 +1,46 @@
+/* TodoInput.css */
+.todo-input {
+  display: flex;
+  margin-bottom: 1.5rem;
+}
+
+.todo-input input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: 1px solid #E5E7EB;
+  border-radius: 4px 0 0 4px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.15s ease-in-out;
+}
+
+.todo-input input:focus {
+  border-color: #3B82F6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+}
+
+.todo-input button {
+  padding: 0.75rem 1.5rem;
+  background-color: #3B82F6;
+  color: white;
+  border: none;
+  border-radius: 0 4px 4px 0;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.15s ease-in-out;
+}
+
+.todo-input button:hover {
+  background-color: #2563EB;
+}
+
+.todo-input button:active {
+  background-color: #1D4ED8;
+}
+
+/* Media queries for responsive design */
+@media (max-width: 640px) {
+  .todo-input button {
+    padding: 0.75rem 1rem;
+  }
+}

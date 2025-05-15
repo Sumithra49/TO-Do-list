@@ -1,61 +1,77 @@
-const { readTasks, writeTasks } = require("../utils/fileHandler");
-const { v4: uuidv4 } = require("crypto");
+import { readTasks, writeTasks } from '../utils/fileHandler.js';
 
-function getTasks(res) {
-  const tasks = readTasks();
-  res.writeHead(200, { "Content-Type": "application/json" });
-  res.end(JSON.stringify(tasks));
-}
+export async function handleTasks(req, res) {
+  const id = req.url.split('/')[2];
 
-function addTask(req, res) {
-  let body = "";
-  req.on("data", (chunk) => (body += chunk));
-  req.on("end", () => {
-    const task = JSON.parse(body);
-    if (!task.title) {
-      res.writeHead(400);
-      return res.end(JSON.stringify({ error: "Title is required" }));
+  try {
+    switch(req.method) {
+      case 'GET':
+        const tasks = await readTasks();
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(tasks));
+        break;
+
+      case 'POST':
+        let body = '';
+        req.on('data', chunk => body += chunk);
+        req.on('end', async () => {
+          const task = JSON.parse(body);
+          const tasks = await readTasks();
+          const newTask = {
+            id: crypto.randomUUID(),
+            title: task.title,
+            completed: false
+          };
+          tasks.push(newTask);
+          await writeTasks(tasks);
+          res.writeHead(201, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify(newTask));
+        });
+        break;
+
+      case 'PUT':
+        if (!id) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'Task ID required' }));
+          return;
+        }
+        body = '';
+        req.on('data', chunk => body += chunk);
+        req.on('end', async () => {
+          const update = JSON.parse(body);
+          const tasks = await readTasks();
+          const taskIndex = tasks.findIndex(t => t.id === id);
+          if (taskIndex === -1) {
+            res.writeHead(404, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'Task not found' }));
+            return;
+          }
+          tasks[taskIndex] = { ...tasks[taskIndex], ...update };
+          await writeTasks(tasks);
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify(tasks[taskIndex]));
+        });
+        break;
+
+      case 'DELETE':
+        if (!id) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'Task ID required' }));
+          return;
+        }
+        const deleteTasks = await readTasks();
+        const filteredTasks = deleteTasks.filter(t => t.id !== id);
+        await writeTasks(filteredTasks);
+        res.writeHead(204);
+        res.end();
+        break;
+
+      default:
+        res.writeHead(405, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Method not allowed' }));
     }
-
-    const tasks = readTasks();
-    const newTask = { id: uuidv4(), title: task.title, completed: false };
-    tasks.push(newTask);
-    writeTasks(tasks);
-    res.writeHead(201);
-    res.end(JSON.stringify(newTask));
-  });
-}
-
-function updateTask(req, res, id) {
-  let body = "";
-  req.on("data", (chunk) => (body += chunk));
-  req.on("end", () => {
-    const update = JSON.parse(body);
-    const tasks = readTasks();
-    const index = tasks.findIndex((t) => t.id === id);
-    if (index === -1) {
-      res.writeHead(404);
-      return res.end(JSON.stringify({ error: "Not found" }));
-    }
-
-    tasks[index] = { ...tasks[index], ...update };
-    writeTasks(tasks);
-    res.writeHead(200);
-    res.end(JSON.stringify(tasks[index]));
-  });
-}
-
-function deleteTask(res, id) {
-  const tasks = readTasks();
-  const updated = tasks.filter((t) => t.id !== id);
-  if (tasks.length === updated.length) {
-    res.writeHead(404);
-    return res.end(JSON.stringify({ error: "Not found" }));
+  } catch (error) {
+    res.writeHead(500, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Internal server error' }));
   }
-
-  writeTasks(updated);
-  res.writeHead(200);
-  res.end(JSON.stringify({ success: true }));
 }
-
-module.exports = { getTasks, addTask, updateTask, deleteTask };

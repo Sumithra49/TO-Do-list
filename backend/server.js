@@ -1,26 +1,29 @@
-const http = require("http");
-const url = require("url");
-const { getTasks, addTask, updateTask, deleteTask } = require("./routes/tasks");
+import http from 'node:http';
+import { URL } from 'node:url';
+import { handleTasks } from './routes/tasks.js';
 
 const server = http.createServer((req, res) => {
-  const parsedUrl = url.parse(req.url, true);
-  const path = parsedUrl.pathname;
-  const method = req.method;
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  if (path === "/tasks" && method === "GET") return getTasks(res);
-  if (path === "/tasks" && method === "POST") return addTask(req, res);
-
-  const idMatch = path.match(/^\/tasks\/(.+)$/);
-  if (idMatch) {
-    const id = idMatch[1];
-    if (method === "PUT") return updateTask(req, res, id);
-    if (method === "DELETE") return deleteTask(res, id);
+  if (req.method === 'OPTIONS') {
+    res.writeHead(200);
+    res.end();
+    return;
   }
 
-  res.writeHead(404);
-  res.end(JSON.stringify({ error: "Route not found" }));
+  const url = new URL(req.url, `http://${req.headers.host}`);
+  
+  if (url.pathname.startsWith('/tasks')) {
+    handleTasks(req, res);
+  } else {
+    res.writeHead(404, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Not found' }));
+  }
 });
 
-server.listen(3000, () => {
-  console.log("Server running at http://localhost:3000");
+const PORT = 3000;
+server.listen(PORT, () => {
+  console.log(`Server running at http://localhost:${PORT}`);
 });

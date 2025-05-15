@@ -1,19 +1,25 @@
-const FilterBar = ({ filter, setFilter }) => {
-  const filters = ['All', 'Active', 'Completed'];
+import '../styles/FilterBar.css';
+
+function FilterBar({ currentFilter, onFilterChange }) {
+  const filters = [
+    { value: 'all', label: 'All' },
+    { value: 'active', label: 'Active' },
+    { value: 'completed', label: 'Completed' }
+  ];
 
   return (
     <div className="filter-bar">
-      {filters.map(f => (
+      {filters.map(filter => (
         <button
-          key={f}
-          onClick={() => setFilter(f)}
-          className={filter === f ? 'active' : ''}
+          key={filter.value}
+          className={currentFilter === filter.value ? 'active' : ''}
+          onClick={() => onFilterChange(filter.value)}
         >
-          {f}
+          {filter.label}
         </button>
       ))}
     </div>
   );
-};
+}
 
 export default FilterBar;

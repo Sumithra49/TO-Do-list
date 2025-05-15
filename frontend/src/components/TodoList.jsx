@@ -1,18 +1,23 @@
 import TodoItem from './TodoItem';
+import '../styles/TodoList.css';
 
-const TodoList = ({ tasks, toggleTask, deleteTask }) => {
+function TodoList({ tasks, onToggleComplete, onDeleteTask }) {
+  if (tasks.length === 0) {
+    return <p className="empty-message">No tasks to display</p>;
+  }
+
   return (
     <ul className="todo-list">
       {tasks.map(task => (
         <TodoItem
           key={task.id}
           task={task}
-          toggleTask={toggleTask}
-          deleteTask={deleteTask}
+          onToggleComplete={onToggleComplete}
+          onDeleteTask={onDeleteTask}
         />
       ))}
     </ul>
   );
-};
+}
 
 export default TodoList;

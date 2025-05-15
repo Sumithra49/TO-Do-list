@@ -1,26 +1,31 @@
 import { useState } from 'react';
+import '../styles/TodoInput.css';
 
-const TodoInput = ({ addTask }) => {
-  const [text, setText] = useState('');
+function TodoInput({ onAddTask }) {
+  const [inputValue, setInputValue] = useState('');
 
-  const handleAdd = () => {
-    if (text.trim() !== '') {
-      addTask(text);
-      setText('');
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (inputValue.trim()) {
+      onAddTask(inputValue);
+      setInputValue('');
     }
   };
 
   return (
-    <div className="todo-input">
+    <form className="todo-input" onSubmit={handleSubmit}>
       <input
         type="text"
-        placeholder="Enter a task"
-        value={text}
-        onChange={(e) => setText(e.target.value)}
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+        placeholder="Add a new task..."
+        aria-label="Add a new task"
       />
-      <button onClick={handleAdd}>Add</button>
-    </div>
+      <button type="submit" aria-label="Add task">
+        Add
+      </button>
+    </form>
   );
-};
+}
 
 export default TodoInput;
